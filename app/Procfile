@@ -1,2 +1,2 @@
 release: yes "yes" | python manage.py migrate --settings=app.settings.production
-web gunicorn app.wsgi --log-file -
+web: gunicorn app.wsgi --log-file -
