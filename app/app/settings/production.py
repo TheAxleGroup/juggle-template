@@ -65,7 +65,7 @@ EMAIL_USE_TLS = True
 SITE_ID = 1
 
 
-MIDDLEWARE = ('wagtailcache.cache.UpdateCacheMiddleware',) + MIDDLEWARE + ('wagtailcache.cache.FetchFromCacheMiddleware',)
+MIDDLEWARE = ['wagtailcache.cache.UpdateCacheMiddleware'] + MIDDLEWARE + ['wagtailcache.cache.FetchFromCacheMiddleware']
 
 REDIS_URL = os.environ.get("REDIS_URL")
 CACHES = {
