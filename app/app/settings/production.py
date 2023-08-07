@@ -11,7 +11,8 @@ DJANGO_ROOT = '/home/app/'
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Database PostgreSQL
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
+DATABASES['default'] = os.environ.get('DATABASE_URL')
 
 DEBUG = os.environ.get("DEBUG") == 'True'
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
