@@ -12,7 +12,18 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Database PostgreSQL
 # django_heroku.settings(locals())
-DATABASES['default'] = os.environ.get('DATABASE_URL')
+# DATABASES['default'] = os.environ.get('DATABASE_URL')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
+    }
+}
 
 DEBUG = os.environ.get("DEBUG") == 'True'
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
