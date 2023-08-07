@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load wagtailcore_tags page_tags %}
+
+{% block content %}
+  {% include "page/navigation.html" %}
+  <main class="pt-[6.5rem]">
+    {% include "blocks/error_code_block.html" with error_code="404" error_subheader="Page not found." error_text="That page doesn't exist. Perhaps it has a similar name in the nave above." button_text="Back Home" button_link="/" %}
+    {% include "blocks/footer_block.html" %}
+  </main>
+{% endblock %}

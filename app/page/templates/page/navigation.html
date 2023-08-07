@@ -1,0 +1,291 @@
+{% load page_tags wagtailcore_tags static wagtailimages_tags %}
+<nav
+        class="fixed z-40 w-full min-h-[5rem] lg:min-h-[6rem] transition-all bg-white  drop-shadow-md">
+    {#  <div class="container hidden lg:flex justify-end">#}
+    {#    {% get_menu 'main-eyebrow-menu' as eyebrow_navigation %}#}
+    {#    <ul class="items-center hidden lg:flex h-full mb-0 bg-button rounded-b-sm overflow-hidden px-2">#}
+    {#      {% for item in eyebrow_navigation.menu_items.all %}#}
+    {#        <li class="">#}
+    {#          {% for main in item.menu_link %}#}
+    {#            {% with classes="px-3 py-3 bg-button block text-white hover:text-primary text-14 font-semibold uppercase" %}#}
+    {#              {% include_block main %}#}
+    {#            {% endwith %}#}
+    {#          {% endfor %}#}
+    {#        </li>#}
+    {#      {% endfor %}#}
+    {#          <li class="px-3">#}
+    {#            {% get_socials as socials %}#}
+    {#            <div class="flex-row mt-2 flex gap-x-2">#}
+    {#              {% for social in socials %}#}
+    {#                <a href="{{ social.value.link }}" class="no-underline text-white hover:text-primary">#}
+    {#                  <i class="{{ social.value.icon_class }} mb-3 text-base"></i>#}
+    {#                </a>#}
+    {#              {% endfor %}#}
+    {#            </div>#}
+    {#          </li>#}
+    {#    </ul>#}
+    {#  </div>#}
+    <div class="md:pl-20">
+        {% get_header_menu as navigation %}
+        <div class="flex flex-shrink-0 items-center pl-4 z-40 h-full py-5">
+            <a href="/"
+               class="transition-all logo w-full w-[7rem] mb-2">
+                {% with header_settings=settings.page.HeaderFooter %}
+                    {% image header_settings.header_logo width-225 as logo %}
+                    {% image header_settings.header_logo width-225 format-webp as logo_webp %}
+                    <picture>
+                        <source srcset="{{ logo_webp.url }}" type="image/webp">
+                        <source srcset="{{ logo.url }}" type="image/png">
+                        <img src="{{ logo.url }}" alt="{{ logo.alt_text }}"
+                             height="{{ logo.height }}"
+                             width="{{ logo.width }}" class="h-full w-full object-contain pt-4">
+                    </picture>
+                {% endwith %}
+            </a>
+            <ul class="menu flex-1 justify-start pl-28 items-center hidden lg:flex ">
+                {% with classes="px-4 py-3 block text-18 font-header text-black font-light" %}
+                    {% for item in navigation.menu_items.all %}
+                        <li class="
+              {% if item.menu_link.0.value.page.full_url == page.full_url or item.menu_link.0.value.page in page.get_ancestors %}
+              {% if not item.menu_link.0.value.page.is_site_root %}
+               current-page
+               {% endif %}
+                {% endif %}
+                        ">
+                            {% for main in item.menu_link %}
+                                {% include_block main %}
+                            {% endfor %}
+                            {% if item.sub_menu|length %}
+                                <ul class="dropdown-menu">
+                                    {% with class="dropdown-item" %}
+                                        {% for sub in item.sub_menu %}
+                                            <li>
+                                                {% with classes="px-4 py-2 block text-14 normal-case" %}
+                                                    {% include_block sub %}
+                                                {% endwith %}
+                                            </li>
+                                        {% endfor %}
+                                    {% endwith %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endwith %}
+            </ul>
+            <ul class="menu flex-1 justify-end items-center hidden pr-20 lg:flex">
+                <p class="mb-0 pb-0 font-light font-header">Find Us On</p>
+                <li class="px-3">
+                    {% get_socials as socials %}
+                    <div class="flex-row flex">
+                        {% for social in socials %}
+                            <a href="{{ social.value.link }}" class="no-underline w-[40px] border-r-[1rem] border-white">
+                                <img src =
+                                     {% if social.value.icon_class == 'instagram' %}
+                                        {% static "images/instagram.svg" %}
+                                     {% elif social.value.icon_class == 'twitter' %}
+                                         {% static "images/twitter.svg" %}
+                                     {% elif social.value.icon_class == 'facebook' %}
+                                         {% static "images/facebook.svg" %}
+                                     {% elif social.value.icon_class == 'linkedin' %}
+                                         {% static "images/linkedin.svg" %}
+                                     {% elif social.value.icon_class == 'youtube' %}
+                                         {% static "images/youtube.svg" %}
+                                     {% elif social.value.icon_class == 'tiktok' %}
+                                         {% static "images/tiktok.svg" %}
+                                     {% elif social.value.icon_class == 'spotify' %}
+                                         {% static "images/spotify.svg" %}
+                                    {% endif %}
+                                >
+                            </a>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+            <div class="flex-1 justify-end flex items-center lg:hidden">
+                <i id="mobileNavToggle" class="fas fa-bars p-6 text-24 text-button cursor-pointer"></i>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="fixed min-h-[100vh] top-0 w-full z-30 pointer-events-none">
+    <div class="absolute left-0 top-0 h-full w-full nav-transform bg-white transition-all duration-500" id="mobileNav">
+        <div class="h-full mt-[6.5rem] relative">
+            <ul class="mobile menu items-center flex flex-col pb-4 bg-white pointer-events-auto px-4">
+                <li class="w-full text-24">
+                    <a href="/" class="px-6 py-5 block text-gray-brand font-body font-semibold">Home</a>
+                </li>
+                {% with classes="px-6 py-5 block text-gray-brand font-body font-semibold" %}
+                    {% for item in navigation.menu_items.all %}
+                        <li class="w-full text-24">
+                            {% for main in item.menu_link %}
+                                {% if item.sub_menu|length %}
+                                    {% with mobile_subnav=True %}
+                                        {% include_block main %}
+                                    {% endwith %}
+                                {% else %}
+                                    {% include_block main %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if item.sub_menu|length %}
+                                <div class="absolute left-0 top-0 h-full w-full bg-white pt-4 subnav transition-all duration-200">
+                                    <a href="javascript:void(0);"
+                                       class="back text-gray-brand py-2 px-6 block normal-case subnav-back">
+                                        <img class="mb-0.5 pr-2 inline" src="{% static "images/angle-left-gray.svg" %}"
+                                             alt="Back to main menu">
+                                        Back
+                                    </a>
+
+                                    {% for main in item.menu_link %}
+                                        <a {% if main.value.link_type != 'link_text' %}
+                                            href="{{ main.value.full_href }}" {% endif %} class="py-4 px-6 block">
+                                            <div class="flex justify-between">
+                                                <span class="text-black ">{{ main.value.link_text }}</span>
+                                                <span>View</span>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                    <div class="px-6 py-2">
+                                        <hr class="text-[#C4C1BE]">
+                                    </div>
+                                    <ul>
+                                        {% for sub in item.sub_menu %}
+                                            <li>
+                                                {% with classes="px-6 py-3 block text-black text-14" %}
+                                                    {% include_block sub %}
+                                                {% endwith %}
+                                            </li>
+                                        {% endfor %}
+                                        {% get_menu_last as last %}
+                                        {% for main in last.menu_link %}
+                                            <li class="px-6 mt-4">
+                                                {% with classes="last-button" %}
+                                                    {% include_block main %}
+                                                {% endwith %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endwith %}
+                <p class="mb-0 pb-0 absolute bottom-[24vh]">Find Us On</p>
+                <li class="px-3 absolute bottom-[20vh]">
+                    {% get_socials as socials %}
+                    <div class="flex-row flex gap-x-4">
+                        {% for social in socials %}
+                            <a href="{{ social.value.link }}" class="no-underline w-[24px]">
+                                <img src =
+                                     {% if social.value.icon_class == 'instagram' %}
+                                        {% static "images/instagram.svg" %}
+                                     {% elif social.value.icon_class == 'twitter' %}
+                                         {% static "images/twitter.svg" %}
+                                     {% elif social.value.icon_class == 'facebook' %}
+                                         {% static "images/facebook.svg" %}
+                                     {% elif social.value.icon_class == 'linkedin' %}
+                                         {% static "images/linkedin.svg" %}
+                                     {% elif social.value.icon_class == 'youtube' %}
+                                         {% static "images/youtube.svg" %}
+                                     {% elif social.value.icon_class == 'tiktok' %}
+                                         {% static "images/tiktok.svg" %}
+                                     {% elif social.value.icon_class == 'spotify' %}
+                                         {% static "images/spotify.svg" %}
+                                    {% endif %}
+                                >
+                            </a>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    function checkIos() {
+        return (
+            ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+                navigator.platform
+            ) ||
+            (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+        );
+    }
+
+    //if(checkIos()) {
+    //  document.body.classList.add('ios');
+    // }
+
+    let mobileNav = document.getElementById('mobileNav');
+    let mobileNavToggle = document.getElementById('mobileNavToggle');
+    const nav = document.querySelector('nav');
+
+    let open = false;
+    let scrollDistance = 0;
+    mobileNavToggle.addEventListener('click', function () {
+
+        if (open) {
+            scrollDistance = window.pageYOffset;
+        }
+
+        document.body.classList.toggle("noscroll");
+        mobileNav.classList.toggle("nav-transform");
+        mobileNavToggle.classList.toggle('fa-bars');
+        mobileNavToggle.classList.toggle('fa-times');
+        mobileNavToggle.classList.toggle('text-button');
+        mobileNavToggle.classList.toggle('text-gray');
+        mobileNav.querySelector('.subnav-transform').classList.remove('subnav-transform');
+    });
+
+
+    function setNavTransparent() {
+        nav.classList.remove('scrolled');
+    }
+
+    function setNavWhite() {
+        nav.classList.add('scrolled');
+    }
+
+    function navScroll() {
+        if (window.scrollY > 1) {
+            setNavWhite();
+        } else {
+            setNavTransparent();
+        }
+    }
+
+    window.addEventListener('scroll', navScroll);
+
+    document.querySelectorAll('a[href*="/#"]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                e.preventDefault();
+                const href = this.getAttribute("href");
+                const offsetTop = document.querySelector(href.replace('\/', '')).offsetTop;
+                scroll({
+                    top: offsetTop - 150,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
+
+    document.querySelectorAll('#mobileNav a[href*="/#"], a[href^="#"]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+            document.body.classList.toggle("noscroll");
+            mobileNav.classList.toggle("nav-transform");
+            mobileNav.querySelector('.subnav-transform').classList.remove('subnav-transform');
+        });
+    });
+
+    document.querySelectorAll('#mobileNav a.has-subnav').forEach(function (item) {
+        let subnav = item.nextElementSibling;
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            subnav.classList.toggle("subnav-transform");
+        });
+        subnav.querySelector('a.subnav-back').addEventListener('click', function (e) {
+            e.preventDefault();
+            subnav.classList.toggle("subnav-transform");
+        });
+    });
+</script>

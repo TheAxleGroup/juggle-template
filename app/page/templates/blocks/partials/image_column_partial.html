@@ -1,0 +1,25 @@
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags %}
+
+<div class="{{ self.column_width }} {% if self.force_column_to_new_row %} col-start-1 {% endif %} flex flex-col justify-center mb-8">
+  <div class="{% if self.circle_image %} rounded-full {% else %} rounded {% endif %} card-shadow">
+    <div
+        class="{% if self.circle_image %} rounded-full {% else %} rounded {% endif %} overflow-hidden relative {% if self.crop_image_to_match_height %} h-full {% endif %}">
+      <div class="{% if self.circle_image %} rounded-full {% else %} rounded {% endif %} overflow-hidden {% if self.crop_image_to_match_height %} lg:absolute top-0 left-0 right-0 bottom-0 {% endif %}">
+        {% lazy_image self.image max-1200x1200 as image %}
+        {% image self.image max-1200x1200 format-webp as image_webp %}
+        <picture>
+          <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                  type="image/webp">
+          <source data-srcset="{{ image.url }} {{ image.width }}w"
+                  type="image/png">
+          <img src="{{ image.lazy_url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+               height="{{ image.height }}"
+               width="{{ image.width }}"
+               class="lazyload h-full w-full max-w-full object-center
+                      {% if self.crop_image_to_match_height %} object-cover {% else %} object-contain {% endif %}"
+               loading="lazy">
+        </picture>
+      </div>
+    </div>
+  </div>
+</div>

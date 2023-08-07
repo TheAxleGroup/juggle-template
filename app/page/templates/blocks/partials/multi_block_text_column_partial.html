@@ -1,0 +1,5 @@
+{% load wagtailcore_tags %}
+
+{% with force_column_to_new_row=self.force_column_to_new_row %}
+  {% include_block self.text_column %}
+{% endwith %}

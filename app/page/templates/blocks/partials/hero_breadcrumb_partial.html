@@ -1,0 +1,17 @@
+{% load wagtailcore_tags %}
+<div class="bg-white-blue mb-16">
+    <div class="container">
+      {% if page.get_ancestors|length > 1 %}
+        <ul class="no-format flex font-medium text-14 py-4 flex-col lg:flex-row">
+          {% for ancestor in page.get_ancestors %}
+            {% if not ancestor.is_root %}
+              <li><a href="{% pageurl ancestor %}" class="">{{ ancestor.title }}</a> <span
+                  class="text-gray-brand px-2 hidden lg:inline"> / </span>
+              </li>
+            {% endif %}
+          {% endfor %}
+          <li class="text-gray-brand">{{ page.title }}</li>
+        </ul>
+      {% endif %}
+    </div>
+  </div>

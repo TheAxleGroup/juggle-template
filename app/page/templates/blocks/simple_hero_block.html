@@ -1,0 +1,64 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block block_class %}
+  simple-hero-block
+{% endblock %}
+
+{% block section_style %}
+  padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="relative">
+    <div class="absolute w-full h-full">
+      {% image self.desktop_image max-1400x600 as image %}
+      {% image self.desktop_image max-1400x600 format-webp as image_webp %}
+
+      {% if self.mobile_image %}
+        {% image self.mobile_image fill-768x500 as image_mobile %}
+        {% image self.mobile_image fill-768x500 format-webp as image_mobile_webp %}
+      {% else %}
+        {% image self.desktop_image fill-768x500 as image_mobile %}
+        {% image self.desktop_image fill-768x500 format-webp as image_mobile_webp %}
+      {% endif %}
+      <div class="overlay h-full">
+        <picture>
+          <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                  type="image/webp">
+
+          <source srcset="{{ image.url }} {{ image.width }}w"
+                  type="image/png">
+
+          <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+               class="h-full w-full object-center object-cover hidden lg:block"
+               height="{{ image.height }}"
+               width="{{ image.width }}">
+        </picture>
+
+        <picture>
+          <source srcset="{{ image_mobile_webp.url }} {{ image_mobile_webp.width }}w"
+                  type="image/webp">
+
+          <source srcset="{{ image_mobile.url }} {{ image_mobile.width }}w"
+                  type="image/png">
+
+          <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+               class="h-full w-full object-center object-cover lg:hidden"
+               height="{{ image_mobile.height }}"
+               width="{{ image_mobile.width }}">
+        </picture>
+      </div>
+    </div>
+    <div class="container">
+      <div class="py-32">
+        <h1 class="mb-4 text-white" data-aos="fade-left">{{ self.header }}</h1>
+        {% if self.subheader %}
+          <p class="text-white text-18 m-0" data-aos="fade-right" data-aos-delay="600">{{ self.subheader }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% include "blocks/partials/hero_breadcrumb_partial.html" %}
+{% endblock %}

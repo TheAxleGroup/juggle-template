@@ -1,0 +1,48 @@
+{% load wagtailcore_tags wagtailimages_tags page_tags widget_tweaks %}
+<form action="{% pageurl formdata.page %}" method="POST" id="form-{{ formdata.page.id }}"
+      class="transition-all max-h-[750px]">
+  {% csrf_token %}
+  <div>
+    {% if formdata.form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for error in formdata.form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="flex flex-col {{ form_classes }} fields-{{ formdata.page.id }}">
+    {% for field in formdata.form.visible_fields %}
+      <div class="flex-1 mb-2 lg:mb-0">
+        <div class="h-full">
+          {{ field.label_tag }}
+          {% render_field field class+="h-full focus:ring-primary focus:border-primary w-full text-gray bg-white placeholder-text-white py-3 border-blue rounded-sm" placeholder+=field.label required+=field.required %}
+
+        </div>
+      </div>
+    {% endfor %}
+    <script>
+      document.querySelectorAll('.fields-{{ formdata.page.id }} select').forEach(function (el) {
+        let option = document.createElement('option');
+        option.innerHTML = el.getAttribute('placeholder');
+        option.value = "";
+        option.setAttribute('disabled', 'disabled');
+        option.setAttribute('selected', 'selected');
+        option.setAttribute('hidden', 'hidden');
+        el.prepend(option);
+      });
+    </script>
+    <div class="">
+      <button type="submit" class="btn {% if button_class %} {{ button_class }} {% else %} btn-primary {% endif %} uppercase">
+        {{ formdata.page.button_text }}
+        {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+      </button>
+    </div>
+  </div>
+</form>
+<div class="hidden thank-you-text mb-4 transition-all text-20">
+  {{ formdata.page.thank_you_text|safe }}
+</div>
+{% with form_id=formdata.page.id %}
+{% include "blocks/partials/ajax_form_partial.html" %}
+{% endwith %}

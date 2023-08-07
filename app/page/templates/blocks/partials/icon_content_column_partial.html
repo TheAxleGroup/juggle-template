@@ -1,0 +1,34 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+<div class="{{ self.column_width }} {% if self.force_column_to_new_row %} col-start-1 {% endif %}">
+  {% for icon in self.icons %}
+    <div class="flex mb-6 {% if icon.value.icon_position == 'top' %} flex-col {% endif %}">
+      <div class="{{  icon.value.icon_size }} flex-shrink-0">
+        {% image icon.value.icon max-256x256 as image %}
+        {% image icon.value.icon max-256x256 format-webp as image_webp %}
+        <picture>
+          <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                  type="image/webp">
+
+          <source srcset="{{ image.url }} {{ image.width }}w"
+                  type="image/png">
+
+          <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+               class="object-center object-contain h-full w-full"
+               height="{{ image.height }}"
+               width="{{ image.width }}">
+        </picture>
+      </div>
+      <div class="flex flex-col {% if icon.value.icon_position == 'side' %} ml-4 {% endif %}">
+        {% if icon.value.header %}
+          <p class="font-bold text-20 leading-tight mb-2 mt-1 text-gray">{{ icon.value.header }}</p>
+        {% endif %}
+        {% if icon.value.content %}
+          <div class="mb-2">
+            {{ icon.value.content }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

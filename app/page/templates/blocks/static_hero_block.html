@@ -1,0 +1,66 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags static %}
+
+{% block block_class %}
+    hero-block
+    bg-color
+{% endblock %}
+
+{% block section_style %}
+    padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+    <div class="pb-32 pt-32 relative">
+        <div class="container flex flex-col-reverse lg:grid grid-cols-12 items-center">
+            <div class="col-start-2 col-span-4">
+                <h1 class="text-black lg:text-40 text-32 leading-relaxed font-header font-light">{{ self.header|safe }}</h1>
+                <div class="text-black">{{ self.subheader }}</div>
+                {% if self.button_link.link_type %}
+                    {% with link_class='btn-primary mt-4' %}
+                        {% include_block self.button_link %}
+                    {% endwith %}
+                {% endif %}
+                {% if self.app_links %}
+                    <div class="flex lg:flex-row flex-col gap-x-4 gap-y-4">
+                        {% for app_links in self.app_links %}
+                            {% lazy_image app_links.value.app_link_image max-1200x1200 as image %}
+                            {% image app_links.value.app_link_image max-1200x1200 format-webp as image_webp %}
+
+                            <picture>
+                                <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                                        type="image/webp">
+                                <source data-srcset="{{ image.url }} {{ image.width }}"
+                                        type="image/png">
+                                <a href="{{ app_links.value.app_link_url }}">
+                                <img src="{{ image.lazy_url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+                                     height="{{ image.height }}"
+                                     width="{{ image.width }}"
+                                     class="lazyload h-36 w-full max-w-full object-center object-contain relative z-10"
+                                     loading="lazy">
+                                </a>
+                            </picture>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-start-7 col-span-6">
+                {% lazy_image self.desktop_image max-1200x1200 as image %}
+                {% image self.desktop_image max-1200x1200 format-webp as image_webp %}
+                <picture>
+                    <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                            type="image/webp">
+                    <source data-srcset="{{ image.url }} {{ image.width }}"
+                            type="image/png">
+                    <img src="{{ image.lazy_url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+                         height="{{ image.height }}"
+                         width="{{ image.width }}"
+                         class="lazyload h-full w-full max-w-full object-center object-contain lg:absolute top-[2vh] left-[25rem] lg:pb-[2vh] z-0"
+                         loading="lazy">
+                </picture>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

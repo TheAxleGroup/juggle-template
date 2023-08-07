@@ -1,0 +1,50 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags %}
+
+
+{% block block_class %}
+    quote-block
+    {% if self.image_background %} bg-color {% endif %}
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+    <div class="container relative pt-8 text-center h-[40rem] flex flex-col items-center justify-center">
+        <div>
+            {% lazy_image self.quote_author_image max-1200x1200 as image %}
+            {% image self.quote_author_image max-1200x1200 format-webp as image_webp %}
+            <picture>
+                <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+                <source data-srcset="{{ image.url }} {{ image.width }}"
+                        type="image/png">
+                <img src="{{ image.lazy_url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}"
+                     class="lazyload h-full w-full max-w-[6.5rem] object-center object-contain mx-auto mb-8"
+                     loading="lazy">
+            </picture>
+        </div>
+        <h2 class="text-32 font-header font-light no-line z-10 max-w-[42rem]">{{ self.quote_text }}</h2>
+        <div class="">
+            <p class="text-black mb-0 text-22 font-header font-light">
+                - {{ self.quote_author_name }}
+            </p>
+            {% if self.quote_author_title %}
+                <p class="text-black mb-0 text-22 leading-tight">
+                    {{ self.quote_author_title }}
+                </p>
+            {% endif %}
+            {% if self.quote_author_title_2 %}
+                <p class="text-gray-brand text-14 leading-tight">
+                    {{ self.quote_author_title_2 }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

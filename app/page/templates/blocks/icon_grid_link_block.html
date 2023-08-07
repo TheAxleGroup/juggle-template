@@ -1,0 +1,84 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+{% block block_class %}
+  three-col-image-link-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    {% if self.block_header %}
+      <div class="flex justify-between mb-6 lg:mb-12">
+        <div>
+          {% with header=self.block_header %}
+            {% include "blocks/partials/block_header_partial.html" %}
+          {% endwith %}
+        </div>
+      </div>
+    {% endif %}
+    <div class="lg:grid grid-cols-12 lg:gap-x-4">
+      {% for col in self.icon_links %}
+        <div
+            class="rounded overflow-hidden group {{ col.value.block_width }} bg-white border border-blue m-px hover:m-0 hover:mb-4 hover:border-2 hover:border-button-hover py-6 px-2 mb-[1.0625rem]">
+          <a class="no-format flex flex-col lg:min-h-48 {% if col.value.icon %} justify-between {% else %} justify-center {% endif %}" href="{{ col.value.link.full_href }}" {% if col.value.link.link_opens_in_new_tab %}
+             target="_blank" {% endif %}>
+
+            {% if col.value.icon %}
+            {% image col.value.icon max-128x128 as image %}
+            {% image col.value.icon max-128x128 format-webp as image_webp %}
+
+            <div class="rounded h-16 relative">
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="h-full w-full max-w-full object-center object-contain {% if col.value.icon_hover %} group-hover:hidden {% endif %}"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+
+            {% if col.value.icon_hover %}
+            {% image col.value.icon_hover max-128x128 as image_hover %}
+            {% image col.value.icon_hover max-128x128 format-webp as image_hover_webp %}
+              <picture>
+                <source srcset="{{ image_hover_webp.url }} {{ image_hover_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image_hover.url }} {{ image_hover.width }}w"
+                        type="image/png">
+
+                <img src="{{ image_hover.url }}" alt="{{ image_hover.alt_text }}"
+                     class="h-full w-full max-w-full object-center object-contain hidden group-hover:block"
+                     height="{{ image_hover.height }}"
+                     width="{{ image_hover.width }}">
+              </picture>
+
+            {% endif %}
+            </div>
+            {% endif %}
+            <div class="text-gray text-center">
+              <p class="m-0 text-24 xl:text-32 font-normal">{{ col.value.icon_title }}</p>
+              <div class="flex items-center justify-center">
+                <p class="mb-0 no-format text-button-hover text-14 font-semibold">
+                  {{ col.value.link.link_text }}
+                </p>
+                <div class="ml-2 text-button-hover">
+                {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

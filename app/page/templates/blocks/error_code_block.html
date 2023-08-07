@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+
+<div class="container py-24">
+  <div class="mb-6">
+
+    <h2 class="text-48 lg:text-80">{{ error_code }}: {{ error_subheader }}</h2>
+  </div>
+  <p>
+    {{ error_text }}
+  </p>
+  {% if button_link %}
+
+  <a href="{{ button_link }}" class="btn btn-primary mt-8">
+    {{ button_text }}
+    {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+  </a>
+  {% endif %}
+</div>

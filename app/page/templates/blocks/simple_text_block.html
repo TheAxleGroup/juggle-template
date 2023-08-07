@@ -1,0 +1,101 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags %}
+
+
+{% block block_class %}
+  simple-text-block
+  {% if self.image_background %} bg-color {% endif %}
+  {{ self.bg_color }}
+  {% if self.bg_color %} bg-color bg-color-light {% endif %}
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  {% if self.image_background %}
+    <div class="absolute left-0 right-0 top-0 bottom-0">
+      {% lazy_image self.image_background max-1400x1400 as image %}
+      {% image self.image_background max-1400x1400 format-webp as image_webp %}
+      <div class="relative h-full overlay">
+      <picture>
+        <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                type="image/webp">
+
+        <source srcset="{{ image.url }} {{ image.width }}w"
+                type="image/png">
+
+        <img src="{{ image.lazy_url }}" alt="{{ image.alt_text }}"
+             class="lazyload relative w-full h-full object-cover object-left-top"
+             height="{{ image.height }}"
+             width="{{ image.width }}">
+      </picture>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container relative">
+    <div class="flex flex-col lg:grid grid-cols-12 gap-x-12 cols">
+      {% include_block self.text_column %}
+      {% if self.link_cards %}
+        <div class="col-start-1 {{ self.text_column.column_width }} mt-4">
+          <div class="flex flex-col lg:grid grid-cols-12 gap-x-6 cols">
+            {% for card in self.link_cards %}
+              <div class="col-span-6 bg-white border border-primary px-3 py-6 lg:p-6 mb-6">
+                <a href="{{ card.value.link.full_href }}" class="" {% if card.value.link.link_opens_in_new_tab %} target="_blank" {% endif %}>
+                  <div class="text-center text-20 lg:text-32 leading-tight text-gray">
+                    {{ card.value.card_content }}
+                  </div>
+                  <div class="flex items-center justify-center">
+                    <p class="mb-0 no-format text-button hover:text-button-hover text-14 font-semibold text-gray">
+                      {{ card.value.link.link_text }}
+                    </p>
+                    <img src="/static/images/button-arrow-orange.svg" alt="" class="ml-2">
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+
+      {% if self.square_images %}
+        <div class="col-start-1 {{ self.text_column.column_width }} mt-4">
+          <div class="flex lg:grid grid-cols-12 gap-x-6">
+            {% for img in self.square_images %}
+              <div class="col-span-2 w-full h-28 px-2 lg:px-2 mb-8">
+                {% image img.value max-256x256 as image %}
+                {% image img.value max-256x256 format-webp as image_webp %}
+
+                <picture>
+                  <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                          type="image/webp">
+
+                  <source srcset="{{ image.url }} {{ image.width }}w"
+                          type="image/png">
+
+                  <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                       class="object-center object-contain h-full w-full"
+                       height="{{ image.height }}"
+                       width="{{ image.width }}">
+                </picture>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if self.button_link.link_type %}
+      <div class="col-span-12">
+        <a href="{{ self.button_link.full_href }}" class="btn {% if self.image_background %} btn-white {% else %} btn-primary {% endif %}" {% if self.button_link.link_opens_in_new_tab %}
+           target="_blank" {% endif %}>
+          {{ self.button_link.link_text }}
+          {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

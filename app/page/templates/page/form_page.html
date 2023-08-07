@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags widget_tweaks %}
+
+{% block content %}
+  {% include "page/navigation.html" %}
+  <main class="pt-[5rem] lg:pt-[6.5rem]">
+    <div class="py-24">
+      <div class="container">
+        <h1>{{ self.title }}</h1>
+      </div>
+    </div>
+    <div class="container pb-12">
+      <form action="{% pageurl page %}" method="POST" id="contact-form"
+            class="transition-all max-h-[750px] overflow-hidden">
+        {% csrf_token %}
+        <div class="">
+          {% if contact_form.form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in contact_form.form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          {% for field in form.visible_fields %}
+            <div class="col-span-2 {% if field.widget_type != 'textarea' %} lg:col-span-1 {% endif %}">
+              <div class="h-full">
+                {{ field.label_tag }}
+                {% render_field field class+="h-full focus:ring-primary focus:border-primary w-full text-gray bg-white placeholder-text-white py-3 border-blue rounded-sm" placeholder+=field.label required+=field.required %}
+              </div>
+            </div>
+          {% endfor %}
+          <div class="col-span-2">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+      </form>
+      <div class="hidden thank-you-text mb-4 transition-all text-20">
+        {{ page.thank_you_text|safe }}
+      </div>
+      {% include "blocks/partials/ajax_form_partial.html" %}
+    </div>
+    {% with mail_classes='hidden' %}
+      {% include "blocks/footer_block.html" %}
+    {% endwith %}
+  </main>
+{% endblock %}

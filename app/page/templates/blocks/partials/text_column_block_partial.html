@@ -1,0 +1,10 @@
+
+{% if self.button_link.link_type %}
+{% with column_width=self.column_width column_header=self.text_header column_content=self.text_content button_style=self.button_link.button_style button_text=self.button_link.link_text button_link=self.button_link.full_href link_opens_in_new_tab=self.button_link.link_opens_in_new_tab list_style=self.list_style subheader=self.text_subheader %}
+  {% include "blocks/partials/text_column_partial.html" %}
+{% endwith %}
+{% else %}
+{% with column_width=self.column_width column_header=self.text_header column_content=self.text_content list_style=self.list_style subheader=self.text_subheader %}
+  {% include "blocks/partials/text_column_partial.html" %}
+{% endwith %}
+{% endif %}

@@ -1,0 +1,47 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+{% block block_class %}
+  icon-text-row-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div class="flex justify-between mb-6 lg:mb-12">
+      <div>
+        {% with header=self.block_header %}
+          {% include "blocks/partials/block_header_partial.html" %}
+        {% endwith %}
+      </div>
+    </div>
+    <div class="flex {% if self.center_items %} justify-center {% else %} {% endif %} flex-col lg:flex-row flex-wrap">
+      {% for col in self.icons %}
+        <div class="flex items-center mb-3 lg:mb-5 item {{ self.items_per_row }}">
+          <div class="h-12 w-12 flex-shrink-0">
+              {% image col.value.icon max-256x256 as image %}
+              {% image col.value.icon max-256x256 format-webp as image_webp %}
+
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="object-center object-contain h-full w-full"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+          </div>
+          <p class="ml-4 font-bold text-20 mb-0">{{ col.value.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

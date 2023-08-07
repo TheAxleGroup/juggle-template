@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+{% load page_tags wagtailcore_tags static wagtailimages_tags %}
+
+{% block content %}
+  <main class="">
+    <div class="page-block relative bg-primary-dark bg-color py-0 lg:py-0">
+      <div class="page-block flex flex-col-reverse lg:grid grid-cols-2 lg:container gap-x-7">
+        <div class="py-8 lg:py-32 flex flex-col gap-y-8 container lg:mx-0 lg:px-0">
+          <div class="w-64">
+            {% image page.fairhill_logo width-400 as logo %}
+            {% image page.fairhill_logo width-400 format-webp as logo_webp %}
+            <picture>
+              <source srcset="{{ logo_webp.url }}" type="image/webp">
+              <source srcset="{{ logo.url }}" type="image/png">
+              <img src="{{ logo.url }}" alt="{{ logo.alt_text }}"
+                   height="{{ logo.height }}"
+                   width="{{ logo.width }}" class="h-full w-full object-contain">
+            </picture>
+          </div>
+          <div class="mb-2">
+            <h1 class="text-48 text-white">Educating, engaging, and inspiring students with learning differences from
+              grades 1-12.</h1>
+          </div>
+          <a href="#"
+             class="inline-block py-3 px-9 text-14 lg:text-20 font-bold text-primary-dark hover:text-white text-center no-underline font-header bg-secondary hover:bg-secondary-dark">
+            Request Information
+          </a>
+        </div>
+        <div class="">
+          <div class="lg:absolute top-0 bottom-0">
+            {% image page.hero_image fill-1200x1200 as image %}
+            {% image page.hero_image fill-1200x1200 format-webp as image_webp %}
+
+            {% image page.hero_image fill-768x400 as image_mobile %}
+            {% image page.hero_image fill-768x400 format-webp as image_mobile_webp %}
+
+            <picture>
+              <source srcset="{{ image_mobile_webp.url }} {{ image_mobile_webp.width }}w,
+                              {{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image_mobile.url }} {{ image_mobile.width }}w,
+                              {{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                   class="h-full w-full max-w-full object-center object-cover"
+                   height="{{ image_mobile.height }}"
+                   width="{{ image_mobile.width }}">
+            </picture>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block relative bg-color overlay-block">
+      <div class="absolute left-0 right-0 top-0 bottom-0">
+        <div class="overlay h-full">
+          {% image page.who_we_serve_image fill-1200x600 as image %}
+          {% image page.who_we_serve_image fill-1200x600 format-webp as image_webp %}
+
+          <picture>
+            <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                    type="image/webp">
+
+            <source srcset="{{ image.url }} {{ image.width }}w"
+                    type="image/png">
+
+            <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                 class="h-full w-full max-w-full object-center object-cover"
+                 height="{{ image_mobile.height }}"
+                 width="{{ image_mobile.width }}">
+          </picture>
+        </div>
+      </div>
+      <div class="container lg:grid grid-cols-2">
+        <div class="">
+          <div class="">
+            <h2 class="text-white text-36 lg:text-50">Who We Serve</h2>
+          </div>
+          <div class="relative text-white pt-8">
+            <p>Fairhill School is a community dedicated to educating, engaging, and inspiring students who have learning
+              differences. Our primary purpose is to provide a superior education for students who have been diagnosed
+              with a learning difference such as Dyslexia, Dysgraphia, Dyscalculia, Auditory Processing Disorder, or
+              Attention Deficit/Hyperactivity Disorder. Fairhill students possess the intellectual potential to succeed
+              academically, often at superior levels. However, because of a learning difference, these students have
+              frequently experienced frustration in traditional school environments.
+            </p>
+            <p>At Fairhill we offer a warm, supportive atmosphere where these bright children have the opportunity to
+              thrive. Our student-centered curriculum focuses on differentiation, multi-sensory experiences, executive
+              function development, and intervention for individualized learning needs. As a private, non-profit,
+              college preparatory school serving grades 1-12, Fairhill fosters each student’s unique potential while
+              guiding each one on their journey toward their dreams.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="page-block relative">
+      <div class="lg:grid grid-cols-2 gap-x-8 container">
+        <div class="relative">
+          <div class="lg:absolute left-0 right-0 bottom-0 top-0 mb-8 lg:mb-0">
+            {% image page.fairhill_experience_image max-1200x1200 as image %}
+            {% image page.fairhill_experience_image max-1200x1200 format-webp as image_webp %}
+
+            <picture>
+              <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                   class="h-full w-full max-w-full object-center object-cover"
+                   height="{{ image_mobile.height }}"
+                   width="{{ image_mobile.width }}">
+            </picture>
+          </div>
+        </div>
+        <div class="">
+          <div class="">
+            <h2 class="text-primary-dark text-36 mb-4">
+              The Fairhill Experience
+            </h2>
+          </div>
+          <div class="">
+            <p> At Fairhill each student is offered a unique approach to traditional education. Our small student to
+              teacher ratios facilitate a supportive and attentive environment. Our expansive campus is set on sixteen
+              wooded acres and includes an athletic field, playground, nature-study area, technology labs, a
+              library/media center, a Fine Arts wing, our Diagnostic Assessment Center, a gymnasium/multipurpose
+              facility, and tennis courts. Our Diagnostic Assessment Center was developed to establish an inventory of
+              the talents and skills unique to each individual. These assessments provide educators the necessary
+              information to offer appropriate classroom accommodations and modifications to help each student achieve
+              academic and social success.
+            </p>
+            <p>
+              Additionally, our academic programs are complemented by enrichment classes-+ including art, music, drama,
+              computer applications, robotics, library science, executive functions skills, and communication skills;
+              with the addition of honors programs and further electives in grades 9-12.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block relative container">
+      <div class="lg:grid grid-cols-3 gap-x-4 flex flex-col gap-y-8">
+        <div class="">
+          <div class="">
+            {% image page.image_row_1 max-768x768 as image %}
+            {% image page.image_row_1 max-768x768 format-webp as image_webp %}
+
+            <picture>
+              <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                   class="h-full w-full max-w-full object-center object-cover"
+                   height="{{ image_mobile.height }}"
+                   width="{{ image_mobile.width }}">
+            </picture>
+          </div>
+          <div class="mt-4">
+            <h3 class="text-primary-dark text-26">College and Career Readiness</h3>
+            <p>Our college prep course is designed to prepare students for their senior year and academic life after
+              high school. With a dominant focus on college prep, it also takes into consideration alternate career and
+              educational opportunities.</p>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="">
+            {% image page.image_row_2 max-768x768 as image %}
+            {% image page.image_row_2 max-768x768 format-webp as image_webp %}
+
+            <picture>
+              <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                   class="h-full w-full max-w-full object-center object-cover"
+                   height="{{ image_mobile.height }}"
+                   width="{{ image_mobile.width }}">
+            </picture>
+          </div>
+          <div class="mt-4">
+            <h3 class="text-primary-dark text-26">Senior Buddy Program</h3>
+            <p>Members of the Senior Class who choose to participate are paired with a first, second, or third grade
+              student to share scheduled learning activities once a month. The Buddy Program provides an avenue for
+              younger and older students to develop strong bonds of friendship.</p>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="">
+            {% image page.image_row_3 max-768x768 as image %}
+            {% image page.image_row_3 max-768x768 format-webp as image_webp %}
+
+            <picture>
+              <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                   class="h-full w-full max-w-full object-center object-cover"
+                   height="{{ image_mobile.height }}"
+                   width="{{ image_mobile.width }}">
+            </picture>
+          </div>
+          <div class="mt-4">
+            <h3 class="text-primary-dark text-26">Activities</h3>
+            <p>Fairhill offers extracurricular activities that inspire students, building self-esteem, creating
+              confidence, encouraging teamwork, and promoting responsibility. While our main focus is on academics,
+              emphasis is also placed on sports, the arts, and social responsibility.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block relative bg-color overlay-block bg-[#e9eaed]">
+      <div class="container text-center">
+        <h2 class="text-center text-primary-dark line-center mb-4">Fairhill Families</h2>
+        <!-- Slider main container -->
+        <div class="swiper w-full h-full">
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper relative">
+              <div class="swiper-slide relative h-full">
+                <div class="bg-white p-10 max-w-2xl mx-auto pb-12">
+                  ...we have seen our children relax and experience true enjoyment in the learning process. We know the teachers love and understand them and work diligently to help them succeed. We are so thankful Fairhill found the scholars in our children. By teaching them how to learn, not just what to learn. Fairhill has equipped them with the skills they will need to navigate a successful life.
+                </div>
+                <div class="-mt-6 bg-primary-dark block max-w-lg mx-auto py-2 px-2">
+                  <p class="text-white mb-0 font-header text-16 lg:text-18">
+                  Parents of 7th and 9th grade Fairhill students
+                  </p>
+                  <p class="text-secondary mb-0">
+                    Fairhill family since 2016
+                  </p>
+                </div>
+              </div>
+
+              <div class="swiper-slide relative">
+                <div class="bg-white p-10 max-w-2xl mx-auto pb-12">
+                  AAAAA
+                </div>
+                <div class="-mt-6 bg-primary-dark block max-w-lg mx-auto py-2 px-2">
+                  <p class="text-white mb-0 font-header text-16 lg:text-18">
+                  Parents of 7th and 9th grade Fairhill students
+                  </p>
+                  <p class="text-secondary mb-0">
+                    Fairhill family since 2016
+                  </p>
+                </div>
+              </div>
+
+              <div class="swiper-slide relative">
+                <div class="bg-white p-10 max-w-2xl mx-auto pb-12">
+                  BBBBBBBBBBBBBBB
+                </div>
+                <div class="-mt-6 bg-primary-dark block max-w-lg mx-auto py-2 px-2">
+                  <p class="text-white mb-0 font-header text-16 lg:text-18">
+                  Parents of 7th and 9th grade Fairhill students
+                  </p>
+                  <p class="text-secondary mb-0">
+                    Fairhill family since 2016
+                  </p>
+                </div>
+              </div>
+          </div>
+          <div class="absolute top-[40%] left-0 right-0 z-10 justify-between hidden lg:flex">
+            <div class="hero-prev mt-0.5 ml-4">
+              <img src="{% static "images/chevron-left-dark.svg" %}" alt="slide-left">
+            </div>
+            <div class="hero-next mt-0.5 mr-4">
+              <img src="{% static "images/chevron-right-dark.svg" %}" alt="slide-right">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script>
+      const swiper = new Swiper('.swiper', {
+        autoHeight: true,
+        effect: "fade",
+        loop: true,
+
+        autoplay: {
+          delay: 6000,
+          disableOnInteraction: false,
+        },
+        // If we need pagination
+        pagination: {
+          el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+          nextEl: '.hero-next',
+          prevEl: '.hero-prev',
+        },
+      });
+    </script>
+    </div>
+
+
+    <div class="page-block relative bg-color overlay-block">
+      <div class="absolute left-0 right-0 top-0 bottom-0">
+        <div class="overlay h-full">
+          {% image page.who_we_serve_image fill-1200x600 as image %}
+          {% image page.who_we_serve_image fill-1200x600 format-webp as image_webp %}
+
+          <picture>
+            <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                    type="image/webp">
+
+            <source srcset="{{ image.url }} {{ image.width }}w"
+                    type="image/png">
+
+            <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                 class="h-full w-full max-w-full object-center object-cover"
+                 height="{{ image_mobile.height }}"
+                 width="{{ image_mobile.width }}">
+          </picture>
+        </div>
+      </div>
+      <div class="container lg:grid grid-cols-2">
+        <div class="py-12">
+          <div class="">
+            <h2 class="text-white text-36 lg:text-50 no-line pb-0">Connect With Us</h2>
+          </div>
+          <div class="relative text-white">
+            <p>To schedule your personal tour, contact our admissions department directly at the number below, or submit
+              your inquiry online and we will be in touch.
+            </p>
+            <a href="#"
+               class="inline-block py-3 px-9 text-14 lg:text-20 font-bold text-primary-dark hover:text-white text-center no-underline font-header bg-secondary hover:bg-secondary-dark">
+              Request Information
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block relative bg-primary-dark">
+      <div class="container flex flex-col lg:flex-row justify-between py-10 gap-y-8">
+        <div class="w-48">
+          {% image page.fairhill_logo width-400 as logo %}
+          {% image page.fairhill_logo width-400 format-webp as logo_webp %}
+          <picture>
+            <source srcset="{{ logo_webp.url }}" type="image/webp">
+            <source srcset="{{ logo.url }}" type="image/png">
+            <img src="{{ logo.url }}" alt="{{ logo.alt_text }}"
+                 height="{{ logo.height }}"
+                 width="{{ logo.width }}" class="h-full w-full object-contain">
+          </picture>
+        </div>
+        <div class="flex flex-col text-white">
+          <div class="">
+            <div class="flex-row flex lg:justify-end">
+              <a href="https://www.linkedin.com/school/fairhill-school/" class="no-underline text-white">
+                <i class="fab fa-linkedin-in mr-3 mb-3 text-18"></i>
+              </a>
+              <a href="https://www.facebook.com/Fairhillschool" class="no-underline text-white">
+                <i class="fab fa-facebook-f mr-3 mb-3 text-18"></i>
+              </a>
+              <a href="https://www.youtube.com/channel/UCZEIkRV8IP7Z1RPznFpTUTg/videos" class="no-underline text-white">
+                <i class="fab fa-youtube mb-3 text-18"></i>
+              </a>
+            </div>
+          </div>
+          <div class="">
+            <p class="text-12">{% now 'Y' %} Fairhill School &copy; All rights reserved</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

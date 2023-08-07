@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load wagtailcore_tags page_tags %}
+
+{% block content %}
+    {% include "page/navigation.html" %}
+    <main class="pt-[6.5rem] lg:pt-[6rem]">
+    {% for block in page.body %}
+        {% with unique_number=forloop.counter0 %}
+            {% include_block block %}
+        {% endwith %}
+    {% endfor %}
+    {% include "blocks/footer_block.html" %}
+    </main>
+{% endblock %}

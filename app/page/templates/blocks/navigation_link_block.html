@@ -1,0 +1,5 @@
+{% load static %}
+<a {% if self.link_type != 'link_text' %} href="{{ self.href_prefix }}{{ self.href }}" {% endif %} {% if self.link_opens_in_new_tab %} target="_blank" {% endif %}  class="{{ classes }} {% if mobile_subnav %} has-subnav {% endif %}">
+  {{ self.link_text }}
+  {% if mobile_subnav %} <img class="mb-1 pl-2 inline" src="{% static "images/angle-right-gray.svg" %}" alt="Has sub menu"> {% endif %}
+</a>

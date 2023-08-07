@@ -1,0 +1,46 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block block_class %}
+  pattern-hero-block
+  bg-color
+{% endblock %}
+
+{% block section_style %}
+  padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="bg-gray">
+    <div class="container">
+      <div class="flex flex-col lg:grid grid-cols-12 gap-x-12 py-8 items-center">
+        <div class="col-span-8 mb-8">
+          <h1 class="mb-4 text-white" data-aos="fade-left">{{ self.header }}</h1>
+          {% if self.subheader %}
+          <p class="text-white text-18 m-0" data-aos="fade-right" data-aos-delay="600">{{ self.subheader }}</p>
+          {% endif %}
+        </div>
+        <div class="col-span-4 relative">
+          {% image self.image max-768x768 as image %}
+          {% image self.image max-768x768 format-webp as image_webp %}
+
+          <div class="bg-dot-pattern absolute right-20 left-60 lg:left-24 w-[1000px] h-[23.5rem] -bottom-36"></div>
+          <picture>
+            <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                    type="image/webp">
+
+            <source srcset="{{ image.url }} {{ image.width }}w"
+                    type="image/png">
+
+            <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                 class="h-full w-full object-center object-contain relative"
+                 height="{{ image.height }}"
+                 width="{{ image.width }}">
+          </picture>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "blocks/partials/hero_breadcrumb_partial.html" %}
+{% endblock %}

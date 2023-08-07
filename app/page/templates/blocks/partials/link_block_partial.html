@@ -1,0 +1,6 @@
+<a {% if self.link_opens_in_new_tab %} target="_blank" {% endif %}
+                                       href="{{ self.full_href }}"
+                                       class="btn {% if self.button_style %} {{ self.button_style }} {% else %} btn-primary {% endif %} {{ link_class }} {{ self.link_color }}"> {{ self.link_text }}
+
+      {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+</a>

@@ -1,0 +1,33 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+
+{% block block_class %}
+  {% if self.pull_into_previous %} -mt-12 lg:-mt-24 {% endif %}
+    hsform
+{% endblock %}
+
+{% block section_style %}
+    padding-bottom: 0px;
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div class="flex flex-col lg:grid grid-cols-12 gap-x-12 cols">
+      <div class="col-span-8">
+        {% if self.block_header %}
+          <h2>{{ self.block_header }}</h2>
+        {% endif %}
+        {% if self.block_content %}
+          <div class="{{ self.list_style }}">
+            {{ self.block_content }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="container mt-8">
+    {{ self.hubspot_code|safe }}
+  </div>
+{% endblock %}

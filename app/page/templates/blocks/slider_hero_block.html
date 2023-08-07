@@ -1,0 +1,134 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block block_class %}
+  slider-hero-block
+{% endblock %}
+
+{% block section_style %}
+  padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+  <!-- Slider main container -->
+  <div class="swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper relative">
+      {% for slide in self.hero_slides %}
+        <div class="swiper-slide relative lg:min-h-[36rem]">
+          <div class="absolute top-0 right-0 left-0 bottom-0">
+            {% image slide.value.desktop_image max-1400x1400 as image %}
+            {% image slide.value.desktop_image max-1400x1400 format-webp as image_webp %}
+
+            {% if slide.value.mobile_image %}
+              {% image slide.value.mobile_image fill-768x400 as image_mobile %}
+              {% image self.value.mobile_image fill-768x400 format-webp as image_mobile_webp %}
+            {% else %}
+              {% image slide.value.desktop_image fill-768x400 as image_mobile %}
+              {% image slide.value.desktop_image fill-768x400 format-webp as image_mobile_webp %}
+            {% endif %}
+
+            <div class="overlay h-full w-full">
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="h-full w-full object-center object-cover"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+            </div>
+          </div>
+          <div class="container lg:grid grid-cols-12 relative pt-20 pb-32 lg:pb-44">
+            <div class="col-span-6">
+              <h1 class="text-white">{{ slide.value.header }}</h1>
+              <div class="text-white">{{ slide.value.subheader }}</div>
+
+              {% if slide.value.button_link.link_type %}
+                <a
+                    href="{{ slide.value.button_link.full_href }}"
+                    {% if slide.value.button_link.link_opens_in_new_tab %} target="_blank" {% endif %}
+                    class="btn btn-white mt-4"> {{ slide.value.button_link.link_text }}
+
+                  {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="absolute top-1/2 left-0 right-0 z-10 justify-between hidden lg:flex">
+      <div class="hero-prev mt-0.5 ml-4">
+        <img src="{% static "images/chevron-left.svg" %}" alt="slide-left">
+      </div>
+      <div class="hero-next mt-0.5 mr-4">
+        <img src="{% static "images/chevron-right.svg" %}" alt="slide-right">
+      </div>
+    </div>
+    <div class="absolute lg:bottom-4 top-8 lg:top-unset left-0 z-10 h-8 w-28">
+      <div class="swiper-pagination relative"></div>
+    </div>
+  </div>
+  <div class="container mb-24 relative z-10">
+    <div class="card-shadow bg-white rounded-[4px] py-6 lg:py-12 px-4 lg:px-8 -mt-24">
+      <div class="flex flex-col lg:grid grid-cols-12 gap-x-8">
+        <div class="col-span-8 mb-8">
+          <div class="mb-8">
+            {% with header=self.sub_block.header %}
+              {% include "blocks/partials/block_header_partial.html" %}
+            {% endwith %}
+          </div>
+          <div class="mb-8">
+            {{ self.sub_block.content }}
+          </div>
+
+          {% if self.sub_block.button_link %}
+            <a href="{{ self.sub_block.button_link.full_href }}" class="btn btn-primary mb-6"
+                {% if self.sub_block.link_opens_in_new_tab %} target="_blank" {% endif %}>
+              {{ self.sub_block.button_link.link_text }}
+              {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+            </a>
+          {% endif %}
+        </div>
+        <div class="col-span-4 flex flex-col">
+          {% for stat_item in self.sub_block.statistics %}
+            <div class="text-center lg:text-left lg:mb-4">
+              <p class="font-bold text-gray text-36 lg:text-90 leading-tight mb-0">{{ stat_item.value.statistic }}</p>
+              <p class="font-bold text-18">{{ stat_item.value.statistic_description }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const swiper = new Swiper('.swiper', {
+      effect: "fade",
+      loop: true,
+
+      autoplay: {
+        delay: 6000,
+        disableOnInteraction: false,
+      },
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination',
+      },
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.hero-next',
+        prevEl: '.hero-prev',
+      },
+    });
+  </script>
+{% endblock %}
+

@@ -1,0 +1,11 @@
+{% load wagtailcore_tags wagtailimages_tags page_tags widget_tweaks %}
+
+<div
+    class="{{ self.column_width }} mb-8">
+
+    {% get_form_data self.form as formdata %}
+    {% with form_classes='lg:grid grid-cols-1 space-y-4' %}
+      <h2 class="font-bold text-black no-line text-24 mb-4 pb-0">{{ formdata.page.title }}</h2>
+      {% include "blocks/partials/form_partial.html" %}
+    {% endwith %}
+</div>

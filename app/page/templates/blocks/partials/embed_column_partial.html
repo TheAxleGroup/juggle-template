@@ -1,0 +1,8 @@
+{% load wagtailcore_tags wagtailimages_tags static wagtailembeds_tags %}
+
+<div
+    class="{{ self.column_width }}">
+  <div class="relative embed-content" style="padding-bottom: {{ self.embed_aspect_ratio }}">
+    {% embed self.embed_link.url %}
+  </div>
+</div>

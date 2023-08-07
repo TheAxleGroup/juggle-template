@@ -1,0 +1,104 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block block_class %}
+  hero-block
+  bg-color
+{% endblock %}
+
+{% block section_style %}
+  padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+  <!-- Slider main container -->
+{#    branch#}
+  <div class="swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      {% for slide in self.hero_slides %}
+        <div class="swiper-slide bg-primary md:pt-24 pb-32 h-auto self-stretch">
+          <div class="container flex flex-col-reverse md:flex-row p-0">
+            <div class="md:w-1/2 md:pr-4 p-3">
+              <p class="text-md relative header-line pb-4 mb-5 after:bg-secondary">
+                {{ self.super_header }}</p>
+              <h1 class="text-white">{{ slide.value.header }}</h1>
+              <div class="text-white">{{ slide.value.subheader }}</div>
+
+              {% if self.button_link.link_type %}
+                {% with link_class='btn-white mt-4' %}
+                  {% include_block self.button_link %}
+                {% endwith %}
+              {% endif %}
+            </div>
+            <div class="bg-gray h-full md:w-1/2 md:absolute w-full min-h-52 right-0 top-0">
+              {% image slide.value.desktop_image fill-1200x1200 as image %}
+              {% image slide.value.desktop_image fill-1200x1200 format-webp as image_webp %}
+
+              {% if slide.value.mobile_image %}
+                {% image slide.value.mobile_image fill-768x400 as image_mobile %}
+                {% image slide.value.mobile_image fill-768x400 format-webp as image_mobile_webp %}
+              {% else %}
+                {% image slide.value.desktop_image fill-768x400 as image_mobile %}
+                {% image slide.value.desktop_image fill-768x400 format-webp as image_mobile_webp %}
+              {% endif %}
+
+              <picture>
+                <source srcset="{{ image_mobile_webp.url }} {{ image_mobile_webp.width }}w,
+                            {{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image_mobile.url }} {{ image_mobile.width }}w,
+                            {{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+                     class="h-full w-full max-w-full object-center object-cover"
+                     height="{{ image_mobile.height }}"
+                     width="{{ image_mobile.width }}">
+              </picture>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="container">
+      <div class="w-1/2 flex absolute bottom-4 left-auto z-10 text-white gap-x-4">
+        <div class="hero-prev mt-0.5">
+          <i class="fas fa-arrow-left"></i>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination relative w-1/2"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="hero-next mt-0.5">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const swiper = new Swiper('.swiper', {
+      effect: "fade",
+      loop: true,
+
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination',
+      },
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.hero-next',
+        prevEl: '.hero-prev',
+      },
+    });
+  </script>
+{% endblock %}
+

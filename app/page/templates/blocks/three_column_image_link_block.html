@@ -1,0 +1,71 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+{% block block_class %}
+  three-col-image-link-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div class="flex justify-between mb-6 lg:mb-12">
+      <div>
+        {% with header=self.block_header %}
+          {% include "blocks/partials/block_header_partial.html" %}
+        {% endwith %}
+      </div>
+      {% if self.button_link.link_type %}
+        <div class="pt-2 hidden lg:block">
+          {% include_block self.button_link %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="lg:grid grid-cols-3 lg:gap-x-4">
+      {% for col in self.image_links %}
+        <div class="rounded border border-blue card-shadow group hover:border-primary overflow-hidden mb-4 lg:mb-0 flex flex-col" data-aos="fade-up"
+             data-aos-delay="{{ forloop.counter0|multiply:'400' }}"
+             data-aos-anchor=".image_link_block" data-aos-offset="" data-aos-anchor-placement="top-center">
+          <a class="no-format h-full flex flex-col" href="{{ col.value.link.full_href }}" {% if col.value.link.link_opens_in_new_tab %}
+             target="_blank" {% endif %}>
+
+            {% image col.value.image fill-768x480 as image %}
+            {% image col.value.image fill-768x480 format-webp as image_webp %}
+
+            <div class="rounded-t h-72 relative overflow-hidden">
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="h-full w-full max-w-full object-center object-cover group-hover:scale-105 transition-all duration-100"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+            </div>
+            <div class="bg-white px-8 py-5 flex-grow flex flex-col">
+              <p class="m-0 text-24 font-bold text-gray">{{ col.value.block_title }}</p>
+              <div class="arrow-black">
+                <p class="mb-0 no-format text-gray text-14">{{ col.value.link.link_text }}
+                {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+      {% if self.button_link.link_type %}
+        <div class="block lg:hidden" data-aos="fade-up"
+             data-aos-delay="1200"
+             data-aos-anchor=".image_link_block" data-aos-offset="" data-aos-anchor-placement="top-center">
+            {% include_block self.button_link %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,115 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags page_tags %}
+
+
+{% block block_class %}
+    plan-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+    <div class="container relative text-center items-center justify-center">
+        <h2 class="font-header text-26 font-light mb-2">{{ self.header }}</h2>
+        <div class="flex flex-row gap-x-4 justify-center mb-4">
+            <p id="toggleMonth" class="font-bold text-secondary-dark">Billed Monthly</p>
+            <span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" value="" class="sr-only peer" name="checkbox">
+                    <div class="w-11 h-6 bg-secondary-dark peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+                </span>
+            <p id="toggleYear" class="">Billed Yearly</p>
+        </div>
+        <div class="container">
+            <div class="flex lg:flex-row flex-col gap-x-6 gap-y-8 justify-center items-center">
+                {% for plan in self.plans %}
+                    <div class="relative w-[240px] h-[470px] shadow-plan border-b-8 border-{{ plan.value.plan_color }} rounded-[10px] text-center">
+                        {% if plan.value.most_popular %}
+                            <p class="absolute py-1 px-4 bg-{{ plan.value.plan_color }} text-12 rounded-[16px] left-[25%] -top-5">
+                                Most Popular</p>
+                        {% endif %}
+                        <h2 class="font-header text-18 font-bold pt-8">{{ plan.value.plan_title }}</h2>
+                        <div class="text-14 mb-0">{{ plan.value.plan_subtitle }}</div>
+                        <div class="toggleMonthPrice">
+                            {% if plan.value.price_month|length < 4 %}
+                                <h2 class="text-48 pr-2"><span
+                                        class="text-20 align-text-top">$</span>{{ plan.value.price_month }}</h2>
+                                <p class="-mt-6">Per Month</p>
+                            {% else %}
+                                <h2 class="text-26 pb-0 pt-6">{{ plan.value.price_month }}</h2>
+                                <p class="text-12">Based on User Count & Features</p>
+                            {% endif %}
+                        </div>
+                        <div class="toggleYearPrice hidden">
+                            {% if plan.value.price_year|length < 4 %}
+                                <h2 class="text-48 pr-2"><span
+                                        class="text-20 align-text-top">$</span>{{ plan.value.price_year }}</h2>
+                                <p class="-mt-6">Yearly</p>
+                            {% else %}
+                                <h2 class="text-26 pb-0 pt-6">{{ plan.value.price_year }}</h2>
+                                <p class="text-12">Based on User Count & Features</p>
+                            {% endif %}
+                        </div>
+                        <a href="{{ plan.value.month_url }}"
+                           class="monthButton text-center border rounded-sm border-secondary-dark !font-header font-semibold text-secondary-dark text-14 px-4 py-2 mb-4 hover:text-anchor-hover hover:border-anchor-hover transiton duration-500">{{ plan.value.button_text }}</a>
+                        <a href="{{ plan.value.year_url }}"
+                           class="yearButton hidden text-center border rounded-sm border-secondary-dark !font-header font-semibold text-secondary-dark text-14 px-4 py-2 mb-4 hover:text-anchor-hover hover:border-anchor-hover transiton duration-500">{{ plan.value.button_text }}</a>
+                        <div class="text-12 mt-8">{{ plan.value.plan_desc }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var checkbox = document.querySelector("input[name=checkbox]");
+        const toggleMonth = document.getElementById('toggleMonth');
+        const toggleYear = document.getElementById('toggleYear');
+        const toggleMonthPrice = document.querySelectorAll('.toggleMonthPrice');
+        const toggleYearPrice = document.querySelectorAll('.toggleYearPrice');
+        const toggleMonthButton = document.querySelectorAll('.monthButton');
+        const toggleYearButton = document.querySelectorAll('.yearButton');
+
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                toggleYear.classList.add('font-bold');
+                toggleYear.classList.add('text-secondary-dark');
+                toggleMonth.classList.remove('font-bold');
+                toggleMonth.classList.remove('text-secondary-dark');
+                toggleMonthPrice.forEach(element => {
+                    element.classList.add('hidden');
+                })
+                toggleYearPrice.forEach(element => {
+                    element.classList.remove('hidden');
+                })
+                toggleMonthButton.forEach(element => {
+                    element.classList.add('hidden');
+                })
+                toggleYearButton.forEach(element => {
+                    element.classList.remove('hidden');
+                })
+            } else {
+                toggleMonth.classList.add('font-bold');
+                toggleMonth.classList.add('text-secondary-dark');
+                toggleYear.classList.remove('font-bold');
+                toggleYear.classList.remove('text-secondary-dark');
+                toggleYearPrice.forEach(element => {
+                    element.classList.add('hidden');
+                })
+                toggleMonthPrice.forEach(element => {
+                    element.classList.remove('hidden');
+                })
+                toggleYearButton.forEach(element => {
+                    element.classList.add('hidden');
+                })
+                toggleMonthButton.forEach(element => {
+                    element.classList.remove('hidden');
+                })
+            }
+        });
+
+    </script>
+{% endblock %}

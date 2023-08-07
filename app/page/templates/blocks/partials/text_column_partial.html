@@ -1,0 +1,52 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+<div class="{{ column_width }} {% if force_column_to_new_row %} col-start-1 {% endif %} mb-8">
+  {% if column_header %}
+    <div class="">
+      {% if not subheader %}
+        {% with header=column_header %}
+          {% include "blocks/partials/block_header_partial.html" %}
+        {% endwith %}
+      {% else %}
+        <h1 class="no-line pb-0 text-40 font-header font-light">{{ column_header }}</h1>
+        <p class="header-line text-20 uppercase text-black font-light pb-4">{{ subheader }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+  {% if column_content %}
+    <div class="mb-6 text-black leading-5 font-light {{ list_style }} wysiwyg-content">
+      {{ column_content }}
+    </div>
+  {% endif %}
+  {% if custom_list %}
+    <div class="mb-6">
+      {% for item in custom_list %}
+        <div class="flex">
+          <div class="h-9 w-9 flex-shrink-0">
+            {% image item.value.icon max-256x256 as image %}
+            {% image item.value.icon max-256x256 format-webp as image_webp %}
+            <picture>
+              <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+
+              <source srcset="{{ image.url }} {{ image.width }}w"
+                      type="image/png">
+
+              <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                   class="object-center object-contain h-full w-full"
+                   height="{{ image.height }}"
+                   width="{{ image.width }}">
+            </picture>
+          </div>
+          <p class="ml-4">{{ item.value.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if button_link %}
+    <a href="{{ button_link }}" class="btn {% if button_style %} {{ button_style }} {% else %} btn-primary {% endif %} mb-6" {% if link_opens_in_new_tab %} target="_blank" {% endif %}>
+      {{ button_text }}
+      {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+    </a>
+  {% endif %}
+</div>

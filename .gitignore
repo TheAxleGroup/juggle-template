@@ -1,0 +1,6 @@
+app/media/
+app/static/
+node_modules
+Gruntfile.js
+secret.json
+secrets.json

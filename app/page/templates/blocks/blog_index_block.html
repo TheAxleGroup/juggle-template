@@ -1,0 +1,56 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+{% block block_class %}
+  three-col-image-link-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div class="flex justify-between mb-6 lg:mb-12">
+      <div>
+        {% with header="Blog Posts" %}
+          {% include "blocks/partials/block_header_partial.html" %}
+        {% endwith %}
+      </div>
+    </div>
+    <div class="lg:grid grid-cols-3 lg:gap-x-4">
+      {% for col in self.blogs %}
+        <div class="rounded border border-blue card-shadow group hover:border-primary overflow-hidden mb-4 lg:mb-4 flex flex-col">
+          <a class="no-format h-full flex flex-col" href="{{ col.get_url }}">
+
+            {% image col.cover_image fill-768x480 as image %}
+            {% image col.cover_image fill-768x480 format-webp as image_webp %}
+
+            <div class="rounded-t h-72 relative overflow-hidden">
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="h-full w-full max-w-full object-center object-cover group-hover:scale-105 transition-all duration-100"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+            </div>
+            <div class="bg-white px-8 py-5 flex-grow flex flex-col">
+              <p class="m-0 text-24 font-bold text-gray">{{ col.title }}</p>
+              <div class="arrow-black">
+                <p class="mb-0 no-format text-gray text-14">Read More
+                {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,40 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+<div
+    class="{{ self.column_width }} {% if self.force_column_to_new_row %} col-start-1 {% endif %} {% if self.icon %} mt-20 {% endif %} bg-white border border-blue rounded card-shadow">
+  <div class="px-4 lg:px-8 lg:pb-20 pb-8 pt-12 relative h-full">
+    {% if self.icon %}
+    <div class="h-20 w-20 flex-shrink-0 absolute -top-10">
+      {% image self.icon max-256x256 as image %}
+      {% image self.icon max-256x256 format-webp as image_webp %}
+      <picture>
+        <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                type="image/webp">
+
+        <source srcset="{{ image.url }} {{ image.width }}w"
+                type="image/png">
+
+        <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+             class="object-center object-contain h-full w-full"
+             height="{{ image.height }}"
+             width="{{ image.width }}">
+      </picture>
+    </div>
+  {% endif %}
+    {% if self.card_header %}
+      <p class="font-bold text-20 leading-tight mb-2 mt-1 text-gray">{{ self.card_header }}</p>
+    {% endif %}
+    {% if self.card_content %}
+      <div class="mb-2">
+        {{ self.card_content }}
+      </div>
+    {% endif %}
+    {% if self.button_link.link_type %}
+      <a href="{{ self.button_link.full_href }}" class="btn {{ self.button_link.button_style }} lg:absolute bottom-8 card-button" {% if self.button_link.link_opens_in_new_tab %}
+         target="_blank" {% endif %}>
+        {{ self.button_link.link_text }}
+        {% include "blocks/partials/circle_arrow_svg_partial.html" %}
+      </a>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,110 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags page_tags %}
+
+{% block block_class %}
+    footer-block
+{% endblock %}
+
+{% block section_style %}
+    padding-bottom: 0px;
+{% endblock %}
+
+{% block block_content %}
+    {#  {% get_footer_form as formdata %}#}
+    {#  {% if formdata and page.show_newsletter_form %}#}
+    {#    <div class="contact-banner">#}
+    {#      <div class="container py-16">#}
+    {#        {% with footer_settings=settings.page.HeaderFooter form_classes='lg:flex-row lg:space-x-4' button_class='btn-white' %}#}
+    {#          <h2 class="font-bold no-line text-24 mb-0 pb-0">{{ formdata.page.title }}</h2>#}
+    {#          <p class="font-medium mb-6">{{ footer_settings.footer_form_text }}</p>#}
+    {#          {% include "blocks/partials/form_partial.html" %}#}
+    {#        {% endwith %}#}
+    {#      </div>#}
+    {#    </div>#}
+    {#  {% endif %}#}
+    <div class=" bg-gradient-to-t from-navy to-navy-light text-white lg:h-[45rem] h-[52rem]">
+        {% with footer_settings=settings.page.HeaderFooter %}
+
+            <div class="">
+                {% if footer_settings.footer_contact_form %}
+                    <div class="container pt-20">
+                    <h3 class="text-22 font-body font-normal text-white">{{ footer_settings.footer_form_header }}</h3>
+                        {{ footer_settings.footer_contact_form|safe }}
+                    </div>
+                {% endif %}
+                {% image footer_settings.footer_background max-1200x1200 as image %}
+                {% image footer_settings.footer_background max-1200x1200 format-webp as image_webp %}
+                <picture>
+                    <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                            type="image/webp">
+                    <source data-srcset="{{ image.url }} {{ image.width }}"
+                            type="image/png">
+                    <img src="{{ image.url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+                         height="{{ image.height }}"
+                         width="{{ image.width }}"
+                         class="lazyload object-center object-cover absolute left-1/2 transform -translate-x-1/2 top-1/2 transform -translate-y-1/2 max-w-[95vh]"
+                         loading="lazy">
+                </picture>
+            </div>
+            <div class="flex container justify-center flex-col lg:flex-row py-4 items-center text-center relative">
+            <div class="lg:w-[30rem]">
+
+            <div class="">
+                {% image footer_settings.footer_logo height-200 as logo %}
+                {% image footer_settings.footer_logo height-200 format-webp as logo_webp %}
+                <picture>
+                    <source srcset="{{ logo_webp.url }}" type="image/webp">
+                    <source srcset="{{ logo.url }}" type="image/png">
+                    <img src="{{ logo.url }}" alt="{{ logo.alt_text }}"
+                         class="h-full w-full max-w-full center-footer-logo object-contain"
+                         height="{{ logo.height }}"
+                         width="{{ logo.width }}">
+                </picture>
+            </div>
+            <p class="mb-10 text-white">
+            </p>
+            <p class="mb-0 text-white">
+                {{ footer_settings.footer_address_1 }}
+            </p>
+            <p class="{% if footer_settings.footer_address_3 %} mb-0 {% else %} mb-8 {% endif %} text-white">
+                {{ footer_settings.footer_address_2 }}
+            </p>
+            {% if footer_settings.footer_address_3 %}
+                <p class="mb-6 text-white">
+                    {{ footer_settings.footer_address_3 }}
+                </p>
+            {% endif %}
+            <ul class="no-format flex flex-col lg:flex-row mb-8 gap-8 justify-center">
+                {% get_small_footer_menu as navigation %}
+                {% with classes="block text-14 font-medium underline" %}
+                    {% for item in navigation.menu_items.all %}
+                        <li>
+                            {% for main in item.menu_link %}
+                                {% include_block main %}
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
+                {% endwith %}
+            </ul>
+            <p class="mb-4 text-white text-14">
+                &copy; {% now 'Y' %} {{ footer_settings.footer_copyright_text }}
+            </p>
+        {% endwith %}
+        </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(function (item) {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute("href");
+                const offsetTop = document.querySelector(href.replace('\/', '')).offsetTop;
+                scroll({
+                    top: offsetTop - 150,
+                    behavior: "smooth"
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

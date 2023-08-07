@@ -1,0 +1,54 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block block_class %}
+  internal-hero-block
+  bg-color
+{% endblock %}
+
+{% block section_style %}
+  padding: 0;
+{% endblock %}
+
+
+{% block block_content %}
+
+  <div class="absolute left-0 right-0 top-0 bottom-0">
+    {% image self.desktop_image fill-1200x1200 as image %}
+    {% image self.desktop_image fill-1200x1200 format-webp as image_webp %}
+
+    {% if slide.value.mobile_image %}
+      {% image self.mobile_image fill-768x400 as image_mobile %}
+      {% image self.mobile_image fill-768x400 format-webp as image_mobile_webp %}
+    {% else %}
+      {% image self.desktop_image fill-768x400 as image_mobile %}
+      {% image self.desktop_image fill-768x400 format-webp as image_mobile_webp %}
+    {% endif %}
+
+    <div class="overlay relative h-full">
+      <picture>
+        <source srcset="{{ image_mobile_webp.url }} {{ image_mobile_webp.width }}w,
+                      {{ image_webp.url }} {{ image_webp.width }}w"
+                type="image/webp">
+
+        <source srcset="{{ image_mobile.url }} {{ image_mobile.width }}w,
+                      {{ image.url }} {{ image.width }}w"
+                type="image/png">
+
+        <img src="{{ image_mobile.url }}" alt="{{ image_mobile.alt_text }}"
+             class="lazyload relative w-full h-full object-cover object-center"
+             height="{{ image.height }}"
+             width="{{ image.width }}">
+      </picture>
+    </div>
+  </div>
+  <div
+      class="container py-40 relative w-full {% if self.internal_hero_style == 'center-hero' %} text-center md:w-4/12 {% else %} md:grid grid-cols-12 {% endif %}">
+    <div class="col-span-5">
+      <h1 class="{% if self.internal_hero_style == 'left-hero' %} header-line pb-5 {% endif %} text-white mb-5 text-32 lg:text-50">{{ self.header }}</h1>
+      <div class="text-white text-18">{{ self.subheader }}</div>
+    </div>
+
+  </div>
+{% endblock %}
+

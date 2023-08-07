@@ -1,0 +1,9 @@
+{% load static %}
+
+<section
+    class="page-block relative overflow-hidden {% block block_class %}{% endblock %}{% if self.is_dark_block %} bg-gray {% endif %} block-{{ unique_number }}"
+    {% if self.block_id %}id="{{ self.block_id }}{% block block_id %}{% endblock %}"{% endif %}
+    style="{% block section_style %}{% endblock %}">
+  {% block block_content %}
+  {% endblock %}
+</section>

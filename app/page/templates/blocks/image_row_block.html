@@ -1,0 +1,42 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags page_tags %}
+
+{% block block_class %}
+  image-row-block
+  bg-color
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="border-t border-b border-gray-light">
+    <div class="container pt-12 pb-8">
+      <div class="grid grid-cols-12 lg:flex justify-between flex-col lg:flex-row flex-wrap">
+        {% for col in self.images %}
+          <div class="col-span-6">
+            <div class="h-32 w-32 mx-auto mb-4">
+              {% image col.value max-256x256 as image %}
+              {% image col.value max-256x256 format-webp as image_webp %}
+
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="object-center object-contain h-full w-full"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

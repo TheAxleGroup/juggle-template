@@ -1,0 +1,47 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+{% block block_class %}
+  square-image-text-block
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div class="flex flex-col lg:grid grid-cols-12 gap-x-12 cols">
+      {% if self.image_order == 'right' %}
+        {% include_block self.text_column %}
+      {% endif %}
+      <div class="col-span-6">
+        <div class="grid grid-cols-12 pb-4 lg:pb-0 lg:gap-y-8">
+          {% for img in self.images %}
+            <div class="col-span-4 w-full h-36 px-2 lg:px-8">
+              {% image img.value max-256x256 as image %}
+              {% image img.value max-256x256 format-webp as image_webp %}
+
+              <picture>
+                <source srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                        type="image/webp">
+
+                <source srcset="{{ image.url }} {{ image.width }}w"
+                        type="image/png">
+
+                <img src="{{ image.url }}" alt="{{ image.alt_text }}"
+                     class="object-center object-contain h-full w-full"
+                     height="{{ image.height }}"
+                     width="{{ image.width }}">
+              </picture>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% if self.image_order == 'left' %}
+        {% include_block self.text_column %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

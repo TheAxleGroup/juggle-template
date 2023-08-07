@@ -1,0 +1,56 @@
+{% extends "page/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags lazyimages_tags static %}
+
+
+{% block block_class %}
+  image-text-block
+  {% if self.image_background %} bg-color {% endif %}
+{% endblock %}
+
+{% block section_style %}
+{% endblock %}
+
+
+{% block block_content %}
+  <div class="container">
+    <div
+        class="flex flex-col lg:grid grid-cols-12 {% if self.image_overflow %} gap-x-0 {% else %} gap-x-28 {% endif %} cols {% if not self.crop_image_to_match_height %} items-center {% endif %}">
+      {% if self.image_order == 'right' %}
+        {% with custom_list=custom_list %}
+          {% include_block self.text_column %}
+        {% endwith %}
+      {% endif %}
+      <div class="col-span-6 {% if self.image_overflow %} h-[35rem] {% endif %}">
+        <div class="rounded overflow-hidden pt-6 mb-2 lg:pt-0 lg:mb-0">
+          <div class="{% if self.circle_image %} rounded-full {% else %} rounded {% endif %} overflow-hidden {% if self.crop_image_to_match_height %} card-shadow lg:absolute top-0 left-0 right-0 bottom-0 {% endif %}">
+            {% lazy_image self.image max-1200x1200 as image %}
+            {% image self.image max-1200x1200 format-webp as image_webp %}
+            <picture>
+              <source data-srcset="{{ image_webp.url }} {{ image_webp.width }}w"
+                      type="image/webp">
+              <source data-srcset="{{ image.url }} {{ image.width }}"
+                      type="image/png">
+              <img src="{{ image.lazy_url }}" data-src="{{ image.url }}" alt="{{ image.alt_text }}"
+                   height="{{ image.height }}"
+                   width="{{ image.width }}"
+                   class="lazyload {% if self.image_overflow %}w-auto max-w-[600px] lg:absolute top-0 {% if self.image_order == 'left' %} right-[60vw] {% else %} left-[60vw] {% endif %} h-full bottom-0 {% else %} h-full w-full max-w-full object-center {% endif %}
+                      {% if self.crop_image_to_match_height %} object-cover {% else %} object-contain {% endif %} "
+                   loading="lazy">
+            </picture>
+
+            {% if self.use_dot_pattern %}
+            <div class="absolute {% if self.image_order == 'left' %} -left-7 {% else %} -right-7 {% endif %} dot-pattern -z-10">
+              <img src="{% static "images/pattern-dot.svg" %}" alt="" class="h-full object-contain">
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% if self.image_order == 'left' %}
+        {% with custom_list=self.custom_list %}
+          {% include_block self.text_column %}
+        {% endwith %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
